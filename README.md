@@ -1,3 +1,5 @@
+> ⚠️ This project relies on an SDK that is in beta. Please report any issues via GitHub.
+
 # mxr-android-sdk-serial-sample
 
 This project demonstrates how your app can communicate with the ManageXR Admin App to get your device's serial number. In order for this to work, your device must be managed by ManageXR.
