@@ -1,12 +1,12 @@
 > ⚠️ This project relies on an SDK that is in beta. Please report any issues via GitHub.
 
-# mxr-android-sdk-serial-sample
+# mxr-android-sdk-sample
 
-This project demonstrates how your app can communicate with the ManageXR Admin App to get your device's serial number. In order for this to work, your device must be managed by ManageXR.
+This project demonstrates how your app can communicate with the ManageXR Admin App to leverage some basic functionality of the ManageXR SDK. In order for this to work, your device must be managed by ManageXR.
 
 ## Try it!
 
-Clone this repo, build it, and install it. Launch the app on your device and you'll see a 2D window that prints out your device's serial number.
+Clone this repo, build it, and install it. Launch the app on your device and you'll see a 2D window that prints out your device's serial number. It also has buttons that can configure a Kiosk App override - we recommend setting a package name in MainActivity.java to something currently installed on the device.
 
 ## To add this functionality to your own project:
 
