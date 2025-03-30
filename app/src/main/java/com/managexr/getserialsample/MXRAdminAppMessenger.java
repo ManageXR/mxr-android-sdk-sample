@@ -30,6 +30,8 @@ public class MXRAdminAppMessenger {
     public static class AdminAppMessageTypes {
         public static final int REGISTER_CLIENT = 0;
         public static final int GET_DEVICE_STATUS = 5;
+
+        public static final int OVERRIDE_KIOSK_APP = 20;
         public static final int DEVICE_STATUS = 5000;
     }
 
@@ -139,7 +141,6 @@ public class MXRAdminAppMessenger {
                     JSONObject deviceStatusJson = new JSONObject(removeQuotesAndUnescape(deviceStatusJsonString));
                     String serial = deviceStatusJson.getString("serial");
                     if (serial.length() > 0) updateSerial(serial);
-
                 }
             } catch (Exception e) {
                 Log.v(TAG, "Failed to parse json: " + e.getMessage());
@@ -218,6 +219,10 @@ public class MXRAdminAppMessenger {
 
     public boolean getDeviceStatusAsync() {
         return sendMessage(AdminAppMessageTypes.GET_DEVICE_STATUS);
+    }
+
+    public boolean overrideKioskAppAsync(String packageName) {
+        return sendMessage(AdminAppMessageTypes.OVERRIDE_KIOSK_APP, "{\"packageName\":\"" + packageName + "\"}");
     }
 
     public boolean sendMessage(int what) {
