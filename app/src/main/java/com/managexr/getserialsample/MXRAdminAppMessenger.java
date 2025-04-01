@@ -20,6 +20,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONObject;
@@ -221,8 +222,10 @@ public class MXRAdminAppMessenger {
         return sendMessage(AdminAppMessageTypes.GET_DEVICE_STATUS);
     }
 
-    public boolean overrideKioskAppAsync(String packageName) {
-        return sendMessage(AdminAppMessageTypes.OVERRIDE_KIOSK_APP, "{\"packageName\":\"" + packageName + "\"}");
+    public boolean overrideKioskAppAsync(@Nullable String packageName) {
+        String packageNameInQuotesOrNull = packageName != null ? "\"" + packageName + "\"" : "null";
+        return sendMessage(AdminAppMessageTypes.OVERRIDE_KIOSK_APP,
+            "{\"packageName\":" + packageNameInQuotesOrNull + "}");
     }
 
     public boolean sendMessage(int what) {

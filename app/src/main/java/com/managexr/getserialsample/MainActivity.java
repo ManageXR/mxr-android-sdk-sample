@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         mxrAdminAppMessenger.overrideKioskAppAsync(KIOSK_APP_A);
     }
 
+    public void onSetKioskAppThisClick(View view) {
+        mxrAdminAppMessenger.overrideKioskAppAsync(getApplicationContext().getPackageName());
+    }
+
     public void onClearKioskOverrideClick(View view) {
         mxrAdminAppMessenger.overrideKioskAppAsync(null);
     }

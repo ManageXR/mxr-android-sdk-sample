@@ -31,16 +31,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/kiosk_app_a"
-        android:text="Set Kiosk App A"
-        android:onClick="onSetKioskAppAClick"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline1" />
+        app:layout_constraintEnd_toStartOf="@id/guideline1" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/kiosk_app_a"
+            android:text="Set Kiosk App A"
+            android:onClick="onSetKioskAppAClick" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/kiosk_app_this"
+            android:text="Set Kiosk THIS APP"
+            android:onClick="onSetKioskAppThisClick" />
+
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
@@ -52,5 +66,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline1"
         app:layout_constraintEnd_toStartOf="@id/guideline2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
