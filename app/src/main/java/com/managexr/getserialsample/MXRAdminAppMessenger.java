@@ -28,12 +28,34 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class MXRAdminAppMessenger {
-    public static class AdminAppMessageTypes {
-        public static final int REGISTER_CLIENT = 0;
-        public static final int GET_DEVICE_STATUS = 5;
+    public enum AdminAppMessageTypes {
+        // Client management
+        REGISTER_CLIENT(0),
+        
+        // Device status and information
+        GET_DEVICE_STATUS(5),
+        CHECK_DB(9),
 
-        public static final int OVERRIDE_KIOSK_APP = 20;
-        public static final int DEVICE_STATUS = 5000;
+        DEVICE_STATUS(5000),
+        
+        // Application management
+        KILL_APP(17),
+        RESTART_APP(18),
+        OVERRIDE_KIOSK_APP(20),
+        
+        // System power management
+        POWER_OFF(170),
+        REBOOT(180);
+        
+        private final int value;
+
+        AdminAppMessageTypes(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     public interface BindStatusListener {
@@ -215,17 +237,57 @@ public class MXRAdminAppMessenger {
     };
 
     private boolean registerAsClient() {
-        return sendMessage(AdminAppMessageTypes.REGISTER_CLIENT);
+        return sendMessage(AdminAppMessageTypes.REGISTER_CLIENT.getValue());
     }
 
     public boolean getDeviceStatusAsync() {
-        return sendMessage(AdminAppMessageTypes.GET_DEVICE_STATUS);
+        return sendMessage(AdminAppMessageTypes.GET_DEVICE_STATUS.getValue());
     }
 
     public boolean overrideKioskAppAsync(@Nullable String packageName) {
-        String packageNameInQuotesOrNull = packageName != null ? "\"" + packageName + "\"" : "null";
-        return sendMessage(AdminAppMessageTypes.OVERRIDE_KIOSK_APP,
-            "{\"packageName\":" + packageNameInQuotesOrNull + "}");
+        return sendMessage(AdminAppMessageTypes.OVERRIDE_KIOSK_APP.getValue(), packageNameAsJson(packageName));
+    }
+
+    /**
+     * Fetches the latest configuration from the ManageXR API.
+     * @return true if message was sent successfully
+     */
+    public boolean fetchLatestConfigurationAsync() {
+        return sendMessage(AdminAppMessageTypes.CHECK_DB.getValue());
+    }
+
+    /**
+     * Kills the specified application.
+     * @param packageName the package name of the app to kill
+     * @return true if message was sent successfully
+     */
+    public boolean killAppAsync(String packageName) {
+        return sendMessage(AdminAppMessageTypes.KILL_APP.getValue(), packageNameAsJson(packageName));
+    }
+
+    /**
+     * Restarts the specified application.
+     * @param packageName the package name of the app to restart
+     * @return true if message was sent successfully
+     */
+    public boolean restartAppAsync(String packageName) {
+        return sendMessage(AdminAppMessageTypes.RESTART_APP.getValue(), packageNameAsJson(packageName));
+    }
+
+    /**
+     * Shuts down the device.
+     * @return true if message was sent successfully
+     */
+    public boolean shutdownAsync() {
+        return sendMessage(AdminAppMessageTypes.POWER_OFF.getValue());
+    }
+
+    /**
+     * Reboots the device.
+     * @return true if message was sent successfully
+     */
+    public boolean rebootAsync() {
+        return sendMessage(AdminAppMessageTypes.REBOOT.getValue());
     }
 
     public boolean sendMessage(int what) {
@@ -272,5 +334,15 @@ public class MXRAdminAppMessenger {
         Intent intent = new Intent();
         intent.setClassName(packageName, ADMIN_SERVICE_CLASS_NAME);
         context.startForegroundService(intent);
+    }
+
+    /**
+     * Helper method to create a JSON string containing a package name.
+     * @param packageName the package name to include in JSON, or null
+     * @return JSON string in format {"packageName":"value"} or {"packageName":null}
+     */
+    private String packageNameAsJson(@Nullable String packageName) {
+        String packageNameInQuotesOrNull = packageName != null ? "\"" + packageName + "\"" : "null";
+        return "{\"packageName\":" + packageNameInQuotesOrNull + "}";
     }
 }
