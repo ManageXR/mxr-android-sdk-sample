@@ -45,7 +45,10 @@ public class MXRAdminAppMessenger {
         
         // System power management
         POWER_OFF(170),
-        REBOOT(180);
+        REBOOT(180),
+
+        // Other
+        UPLOAD_DEVICE_LOGS(23);
         
         private final int value;
 
@@ -288,6 +291,14 @@ public class MXRAdminAppMessenger {
      */
     public boolean rebootAsync() {
         return sendMessage(AdminAppMessageTypes.REBOOT.getValue());
+    }
+
+    /**
+     * Uploads the device logs to the ManageXR server.
+     * @return true if message was sent successfully
+     */
+    public boolean uploadDeviceLogsAsync() {
+        return sendMessage(AdminAppMessageTypes.UPLOAD_DEVICE_LOGS.getValue());
     }
 
     public boolean sendMessage(int what) {
